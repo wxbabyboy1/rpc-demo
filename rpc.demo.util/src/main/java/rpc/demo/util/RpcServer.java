@@ -18,7 +18,7 @@ public class RpcServer implements Closeable {
         this.rpcServers = new ConcurrentHashMap<>();
     }
 
-    public void register(Class clazz) {
+    public void register(Class clazz) throws InstantiationException, IllegalAccessException {
         //获取类继承的接口
         Class[] intfs = clazz.getInterfaces();
         if (intfs.length == 0) {

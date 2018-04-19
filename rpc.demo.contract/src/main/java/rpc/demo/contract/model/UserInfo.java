@@ -18,7 +18,7 @@ public class UserInfo implements Serializable {
     @Override
     public String toString() {
         return String.format(
-                "userId:%d,userName:'%s',sex:%d",
+                "{userId:%d,userName:'%s',sex:%d}",
                 this.userId,
                 this.userName,
                 this.sex);

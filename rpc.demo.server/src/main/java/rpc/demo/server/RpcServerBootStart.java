@@ -2,6 +2,7 @@ package rpc.demo.server;
 
 import rpc.demo.server.imp.UserImp;
 import rpc.demo.util.RpcServer;
+import rpc.demo.util.server.ServiceContainer;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -14,7 +15,7 @@ public class RpcServerBootStart {
         testMethod();
     }
 
-    private static void start() throws IOException {
+    private static void start() throws IOException, IllegalAccessException, InstantiationException {
         RpcServer rpcServer = new RpcServer(9000);
         rpcServer.register(UserImp.class);
         rpcServer.start();
@@ -26,19 +27,8 @@ public class RpcServerBootStart {
     }
 
     private static void testMethod() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
-        Class clazz = UserImp.class;
-        Method[] methods = clazz.getMethods();
-        Class[] classes = null;
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i].getName().equals("findById")) {
-                classes = methods[i].getParameterTypes();
-            }
-        }
-
-        if (classes == null) return;
-        Method method = clazz.getMethod("findById", classes);
-        Object result = method.invoke(clazz.newInstance(), 1);
-
+        ServiceContainer serviceContainer = new ServiceContainer(UserImp.class);
+        Object result = serviceContainer.invoke("findById", 1);
         System.out.println(result);
     }
 
