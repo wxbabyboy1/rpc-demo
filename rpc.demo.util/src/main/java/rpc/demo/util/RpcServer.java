@@ -1,9 +1,9 @@
 package rpc.demo.util;
 
+import rpc.demo.util.server.ServiceContainer;
+
 import java.io.Closeable;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,7 +11,7 @@ public class RpcServer implements Closeable {
 
     private int port;
 
-    private Map<String, Class<?>> rpcServers;
+    private Map<String, ServiceContainer> rpcServers;
 
     public RpcServer(int port) {
         this.port = port;
@@ -25,7 +25,8 @@ public class RpcServer implements Closeable {
             return;
         }
         String intfName = intfs[0].getCanonicalName();
-        this.rpcServers.put(intfName, clazz);
+        ServiceContainer serviceContainer = new ServiceContainer(clazz);
+        this.rpcServers.put(intfName, serviceContainer);
     }
 
     public void start() {
