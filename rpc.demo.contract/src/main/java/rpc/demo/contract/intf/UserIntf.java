@@ -8,4 +8,6 @@ public interface UserIntf {
 
     public List<UserInfo> findById(int userId);
 
+    public UserInfo find(int userId);
+
 }

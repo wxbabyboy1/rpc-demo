@@ -1,16 +1,20 @@
 package rpc.demo.util.server;
 
-import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import rpc.demo.util.codec.Codec;
+import rpc.demo.util.codec.JsonCodec;
 import rpc.demo.util.protocol.ProtocolRequestEntity;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class ServerDecoder extends ByteToMessageDecoder {
 
     //{[body.length]}body
+
+    private Codec codec = new JsonCodec();
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> list) throws Exception {
@@ -18,15 +22,25 @@ public class ServerDecoder extends ByteToMessageDecoder {
         int bodyLen = 0;
         if (buf.readableBytes() >= 8) {
             //{[  ]}  标记位处理，这里不做演示
-            byte[] head = new byte[8];
-            buf.readBytes(head);
+            byte[] L = new byte[2];
+            byte[] len = new byte[4];
+            byte[] R = new byte[2];
+            buf.readBytes(L);
+            buf.readBytes(len);
+            buf.readBytes(R);
+            String Ls = new String(L, StandardCharsets.UTF_8);
+            String Rs = new String(R, StandardCharsets.UTF_8);
             //获取包体长度
-            bodyLen = (head[2] << 24) + (head[3] << 16) + (head[4] << 8) + head[5];
+            bodyLen = (len[0] & 0xFF) << 24 | (len[1] & 0xFF) << 16 | (len[2] & 0xFF) << 8 | len[3] & 0xFF;
+            System.out.println("包头：" + Ls + bodyLen + Rs);
         }
         //然后解析包体
         if (bodyLen > 0 && buf.readableBytes() >= bodyLen) {
             byte[] body = new byte[bodyLen];
-            Object entity = JSON.parseObject(body, ProtocolRequestEntity.class);
+            buf.readBytes(body);
+            String result = new String(body, StandardCharsets.UTF_8);
+            System.out.println("包体：" + result);
+            Object entity = codec.decode(body, ProtocolRequestEntity.class);
             list.add(entity);
         }
     }

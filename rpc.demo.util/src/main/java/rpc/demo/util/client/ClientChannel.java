@@ -1,7 +1,6 @@
 package rpc.demo.util.client;
 
 import io.netty.channel.socket.nio.NioSocketChannel;
-import rpc.demo.util.protocol.ProtocolResponsetEntity;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -9,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ClientChannel  extends NioSocketChannel {
 
-    private ProtocolResponsetEntity responseMessage;
+    private String responseMessage;
 
     private ReentrantLock lock = new ReentrantLock();
 
@@ -19,7 +18,7 @@ public class ClientChannel  extends NioSocketChannel {
         this.responseMessage = null;
     }
 
-    public ProtocolResponsetEntity get(long timeout) throws InterruptedException {
+    public String get(long timeout) throws InterruptedException {
         lock.lock();
         try {
             long end = System.currentTimeMillis() + timeout;
@@ -36,7 +35,7 @@ public class ClientChannel  extends NioSocketChannel {
         return responseMessage;
     }
 
-    public void set(ProtocolResponsetEntity message) {
+    public void set(String message) {
         lock.lock();
         try {
             responseMessage = message;

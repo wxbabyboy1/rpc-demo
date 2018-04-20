@@ -23,4 +23,14 @@ public class UserImp implements UserIntf {
         return list;
     }
 
+    @Override
+    public UserInfo find(int userId) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(userId + 1);
+        userInfo.setUserName("老金" + (userId + 1));
+        userInfo.setSex(userId + 1);
+
+        return userInfo;
+    }
+
 }
