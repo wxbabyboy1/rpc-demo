@@ -17,6 +17,8 @@
 
     <properties>
         <version.lombok>1.16.8</version.lombok>
+        <version.netty>4.1.23.Final</version.netty>
+        <version.fastjson>1.2.47</version.fastjson>
     </properties>
 
     <dependencyManagement>
@@ -25,6 +27,16 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${version.lombok}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${version.netty}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${version.fastjson}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

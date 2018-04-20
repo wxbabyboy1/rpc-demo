@@ -7,22 +7,12 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class ProtocolEntity implements Serializable {
-
-    /**
-     * 执行接口全名
-     */
-    private String clazzName;
-
-    /**
-     * 执行方法名
-     */
-    private String methodName;
+public class ProtocolResponsetEntity implements Serializable {
 
     /**
      * 执行参数
      */
-    private Object[] params;
+    private Object result;
 
     @Override
     public String toString() {

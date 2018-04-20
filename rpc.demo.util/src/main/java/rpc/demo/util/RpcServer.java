@@ -1,5 +1,15 @@
 package rpc.demo.util;
 
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.*;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
+import rpc.demo.util.server.ServerDecoder;
+import rpc.demo.util.server.ServerEncoder;
+import rpc.demo.util.server.ServerHandler;
 import rpc.demo.util.server.ServiceContainer;
 
 import java.io.Closeable;
@@ -12,6 +22,8 @@ public class RpcServer implements Closeable {
     private int port;
 
     private Map<String, ServiceContainer> rpcServers;
+
+    private ChannelFuture future;
 
     public RpcServer(int port) {
         this.port = port;
@@ -29,12 +41,37 @@ public class RpcServer implements Closeable {
         this.rpcServers.put(intfName, serviceContainer);
     }
 
-    public void start() {
+    public void start() throws InterruptedException {
+        // 配置服务端的NIO线程组
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        ServerBootstrap b = new ServerBootstrap();
+        b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+                .option(ChannelOption.SO_BACKLOG, 100)
+                .handler(new LoggingHandler(LogLevel.INFO))
+                .childHandler(new ChannelInitializer<SocketChannel>(){
+                    @Override
+                    protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        ChannelPipeline cp = socketChannel.pipeline();
+                        //read
+                        cp.addLast("read", new ServerDecoder());
+                        cp.addLast("read-handler", new ServerHandler(rpcServers));
+                        //write
+                        cp.addFirst("write", new ServerEncoder());
+                    }
+                });
 
+        // 绑定端口，同步等待成功
+        this.future =b.bind("localhost", this.port).sync();
     }
 
     @Override
     public void close() throws IOException {
+        try {
+            this.future.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("rpc server stop");
     }
 

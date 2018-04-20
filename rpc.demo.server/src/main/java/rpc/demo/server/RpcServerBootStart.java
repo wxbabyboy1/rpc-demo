@@ -12,10 +12,10 @@ import java.lang.reflect.TypeVariable;
 public class RpcServerBootStart {
 
     public static void main(String[] args) throws Exception {
-        testMethod();
+        start();
     }
 
-    private static void start() throws IOException, IllegalAccessException, InstantiationException {
+    private static void start() throws IOException, IllegalAccessException, InstantiationException, InterruptedException {
         RpcServer rpcServer = new RpcServer(9000);
         rpcServer.register(UserImp.class);
         rpcServer.start();
@@ -26,7 +26,7 @@ public class RpcServerBootStart {
         rpcServer.close();
     }
 
-    private static void testMethod() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+    private static void testMethod() throws InvocationTargetException, IllegalAccessException, InstantiationException {
         ServiceContainer serviceContainer = new ServiceContainer(UserImp.class);
         Object result = serviceContainer.invoke("findById", 1);
         System.out.println(result);
