@@ -5,6 +5,7 @@ import rpc.demo.contract.model.UserInfo;
 import rpc.demo.util.RpcClient;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.nio.charset.StandardCharsets;
 
 public class ClientDemo {
@@ -14,15 +15,24 @@ public class ClientDemo {
     }
 
     private static void client() throws IOException, InterruptedException {
-        try (RpcClient client = RpcClient.get("localhost", 9000) ) {
-            UserIntf userIntf = client.getProxy(UserIntf.class);
-            for (int i = 0; i < 50000; i++) {
-                UserInfo userInfo = userIntf.find(i);
-                System.out.println("查询的结果：" + userInfo);
-            }
+        for (int i = 0; i < 5; i++) {
+            final int b = i + 1;
+            new Thread(() -> {
+                try (RpcClient client = RpcClient.get("localhost", 9000) ) {
+                    UserIntf userIntf = client.getProxy(UserIntf.class);
+                    int start = (b - 1) * 5;
+                    int end = b * 5;
+                    for (int j = start; j < end; j++) {
+                        UserInfo userInfo = userIntf.find(j);
+                        System.out.println("查询的结果：" + userInfo);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
 
-        System.exit(0);
+        //System.exit(0);
     }
 
     private static void test() throws IOException {
