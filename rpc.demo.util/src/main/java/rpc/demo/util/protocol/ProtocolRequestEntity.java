@@ -22,7 +22,7 @@ public class ProtocolRequestEntity implements Serializable {
     /**
      * 执行参数
      */
-    private Object[] params;
+    private byte[] params;
 
     @Override
     public String toString() {

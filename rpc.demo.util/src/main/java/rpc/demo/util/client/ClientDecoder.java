@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import rpc.demo.util.codec.Codec;
 import rpc.demo.util.codec.JsonCodec;
+import rpc.demo.util.protocol.ProtocolResponseEntity;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -38,8 +39,9 @@ public class ClientDecoder extends ByteToMessageDecoder {
         if (bodyLen > 0 && buf.readableBytes() >= bodyLen) {
             byte[] body = new byte[bodyLen];
             buf.readBytes(body);
-            String result = new String(body, StandardCharsets.UTF_8);
-            System.out.println("包体：" + result);
+            String result_body = new String(body, StandardCharsets.UTF_8);
+            System.out.println("包体：" + result_body);
+            ProtocolResponseEntity result = codec.decode(body, ProtocolResponseEntity.class);
             list.add(result);
         }
     }

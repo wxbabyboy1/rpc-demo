@@ -11,6 +11,7 @@ import rpc.demo.util.client.ClientHandler;
 import rpc.demo.util.codec.Codec;
 import rpc.demo.util.codec.JsonCodec;
 import rpc.demo.util.protocol.ProtocolRequestEntity;
+import rpc.demo.util.protocol.ProtocolResponseEntity;
 
 import java.io.Closeable;
 import java.lang.reflect.*;
@@ -96,21 +97,24 @@ public class RpcClient implements Closeable {
 
             Object result = null;
 
-            //拼装包体
+            //拼装请求包体
             ProtocolRequestEntity entity = new ProtocolRequestEntity();
             entity.setClazzName(method.getDeclaringClass().toString());
             entity.setMethodName(method.getName());
-            entity.setParams(args);
+            if (args != null) {
+                entity.setParams(codec.encode(args));
+            }
 
             //执行远程函数
             ClientChannel channel = (ClientChannel)this.future.channel();
             channel.reset();
             ChannelFuture responseFuture = channel.writeAndFlush(entity);
-            String responsetEntity = channel.get(5000000);
+            //获取远程执行结果
+            ProtocolResponseEntity responsetEntity = channel.get(5000000);
 
             //反序列化结果，需要对返回类型做特殊处理，例如集合等等
             Class returnClazz = method.getReturnType();
-            result = codec.decode(responsetEntity, returnClazz);
+            result = codec.decode(responsetEntity.getResult(), returnClazz);
 
             return result;
         }

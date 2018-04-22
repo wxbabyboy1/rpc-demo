@@ -15,7 +15,7 @@ public class ClientDemo {
     }
 
     private static void client() throws IOException, InterruptedException {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             final int b = i + 1;
             new Thread(() -> {
                 try (RpcClient client = RpcClient.get("localhost", 9000) ) {
