@@ -4,7 +4,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import rpc.demo.util.protocol.ProtocolRequestEntity;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 public class ServerHandler extends SimpleChannelInboundHandler<ProtocolRequestEntity> {

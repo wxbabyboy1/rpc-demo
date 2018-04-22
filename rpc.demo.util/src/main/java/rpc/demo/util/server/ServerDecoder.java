@@ -40,6 +40,7 @@ public class ServerDecoder extends ByteToMessageDecoder {
             buf.readBytes(body);
             String result = new String(body, StandardCharsets.UTF_8);
             System.out.println("包体：" + result);
+            //反序列化对于内部的params属性做特殊处理
             Object entity = codec.decode(body, ProtocolRequestEntity.class);
             list.add(entity);
         }

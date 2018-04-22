@@ -8,9 +8,6 @@ import rpc.demo.util.codec.JsonCodec;
 import rpc.demo.util.protocol.Const;
 import rpc.demo.util.protocol.ProtocolRequestEntity;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 public class ClientEncoder extends MessageToByteEncoder<ProtocolRequestEntity> {
 
     //{[body.length]}body

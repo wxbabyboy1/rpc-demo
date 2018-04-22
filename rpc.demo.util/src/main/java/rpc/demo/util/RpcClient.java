@@ -13,9 +13,7 @@ import rpc.demo.util.codec.JsonCodec;
 import rpc.demo.util.protocol.ProtocolRequestEntity;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.lang.reflect.*;
-import java.util.List;
 
 public class RpcClient implements Closeable {
 
@@ -110,7 +108,7 @@ public class RpcClient implements Closeable {
             ChannelFuture responseFuture = channel.writeAndFlush(entity);
             String responsetEntity = channel.get(5000000);
 
-            //反序列化结果
+            //反序列化结果，需要对返回类型做特殊处理，例如集合等等
             Class returnClazz = method.getReturnType();
             result = codec.decode(responsetEntity, returnClazz);
 
