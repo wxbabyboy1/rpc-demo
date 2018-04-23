@@ -5,8 +5,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import rpc.demo.util.codec.Codec;
-import rpc.demo.util.codec.JsonCodec;
-import rpc.demo.util.codec.XmlCodec;
+import rpc.demo.util.codec.CodecFactory;
 import rpc.demo.util.protocol.ProtocolResponseEntity;
 
 import java.nio.charset.StandardCharsets;
@@ -16,7 +15,7 @@ public class ClientDecoder extends ByteToMessageDecoder {
 
     //{[body.length]}body
 
-    private Codec codec = new XmlCodec();
+    private Codec codec = CodecFactory.codec();
 
     private int bodyLen = 0;
 

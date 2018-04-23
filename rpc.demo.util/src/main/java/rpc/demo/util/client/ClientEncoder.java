@@ -4,8 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import rpc.demo.util.codec.Codec;
-import rpc.demo.util.codec.JsonCodec;
-import rpc.demo.util.codec.XmlCodec;
+import rpc.demo.util.codec.CodecFactory;
 import rpc.demo.util.protocol.Const;
 import rpc.demo.util.protocol.ProtocolRequestEntity;
 
@@ -13,7 +12,7 @@ public class ClientEncoder extends MessageToByteEncoder<ProtocolRequestEntity> {
 
     //{[body.length]}body
 
-    private Codec codec = new XmlCodec();
+    private Codec codec = CodecFactory.codec();
 
     @Override
     protected void encode(ChannelHandlerContext ctx, ProtocolRequestEntity entity, ByteBuf buf) throws Exception {

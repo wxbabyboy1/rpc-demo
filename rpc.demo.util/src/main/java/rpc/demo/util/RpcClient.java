@@ -9,8 +9,7 @@ import rpc.demo.util.client.ClientDecoder;
 import rpc.demo.util.client.ClientEncoder;
 import rpc.demo.util.client.ClientHandler;
 import rpc.demo.util.codec.Codec;
-import rpc.demo.util.codec.JsonCodec;
-import rpc.demo.util.codec.XmlCodec;
+import rpc.demo.util.codec.CodecFactory;
 import rpc.demo.util.protocol.ProtocolRequestEntity;
 import rpc.demo.util.protocol.ProtocolResponseEntity;
 
@@ -80,7 +79,7 @@ public class RpcClient implements Closeable {
 
     static class RpcInvoker implements InvocationHandler {
 
-        private Codec codec = new XmlCodec();
+        private Codec codec = CodecFactory.codec();
 
         private ChannelFuture future;
 
