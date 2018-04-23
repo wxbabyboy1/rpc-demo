@@ -27,7 +27,7 @@ public class ClientDemo {
                         UserInfo userInfo = userIntf.find(j);
                         System.out.println("查询的结果1：" + userInfo);
                         List<UserInfo> userInfos = userIntf.findById(j);
-                        System.out.println("查询的结果1：" + userInfos);
+                        System.out.println("查询的结果2：" + userInfos);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
