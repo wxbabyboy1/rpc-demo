@@ -16,6 +16,9 @@ public class UserImp implements UserIntf {
             userInfo.setUserId(i + 1);
             userInfo.setUserName("老金" + (i + 1));
             userInfo.setSex(i + 1);
+            //List<UserInfo> users = new ArrayList<>();
+            //users.add(userInfo);
+            //userInfo.setUsers(users);
 
             list.add(userInfo);
         }
@@ -29,6 +32,9 @@ public class UserImp implements UserIntf {
         userInfo.setUserId(userId + 1);
         userInfo.setUserName("老金" + (userId + 1));
         userInfo.setSex(userId + 1);
+        List<UserInfo> users = new ArrayList<>();
+        users.add(userInfo);
+        userInfo.setUsers(users);
 
         return userInfo;
     }
