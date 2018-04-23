@@ -7,6 +7,7 @@ import rpc.demo.util.RpcClient;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class ClientDemo {
 
@@ -23,7 +24,7 @@ public class ClientDemo {
                     int start = (b - 1) * 5;
                     int end = b * 5;
                     for (int j = start; j < end; j++) {
-                        UserInfo userInfo = userIntf.find(j);
+                        List<UserInfo> userInfo = userIntf.findById(j);
                         System.out.println("查询的结果：" + userInfo);
                     }
                 } catch (InterruptedException e) {

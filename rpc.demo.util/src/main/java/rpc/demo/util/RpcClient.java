@@ -113,8 +113,13 @@ public class RpcClient implements Closeable {
             ProtocolResponseEntity responsetEntity = channel.get(5000000);
 
             //反序列化结果，需要对返回类型做特殊处理，例如集合等等
+            byte[] result_bytes = responsetEntity.getResult();
             Class returnClazz = method.getReturnType();
-            result = codec.decode(responsetEntity.getResult(), returnClazz);
+            if (returnClazz.getComponentType() == null) {
+                result = codec.decode(result_bytes, returnClazz);
+            } else {
+                result = codec.decodeArray(result_bytes, returnClazz);
+            }
 
             return result;
         }
