@@ -19,6 +19,7 @@
         <version.lombok>1.16.8</version.lombok>
         <version.netty>4.1.23.Final</version.netty>
         <version.fastjson>1.2.47</version.fastjson>
+        <version.xstream>1.4.5</version.xstream>
     </properties>
 
     <dependencyManagement>
@@ -33,6 +34,13 @@
                 <artifactId>netty-all</artifactId>
                 <version>${version.netty}</version>
             </dependency>
+            <!-- xml 序列化 Start -->
+            <dependency>
+                <groupId>com.thoughtworks.xstream</groupId>
+                <artifactId>xstream</artifactId>
+                <version>${version.xstream}</version>
+            </dependency>
+            <!-- xml 序列化 End -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>

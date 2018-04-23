@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import rpc.demo.util.codec.Codec;
 import rpc.demo.util.codec.JsonCodec;
+import rpc.demo.util.codec.XmlCodec;
 import rpc.demo.util.protocol.ProtocolRequestEntity;
 
 import java.nio.charset.StandardCharsets;
@@ -14,7 +15,7 @@ public class ServerDecoder extends ByteToMessageDecoder {
 
     //{[body.length]}body
 
-    private Codec codec = new JsonCodec();
+    private Codec codec = new XmlCodec();
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> list) throws Exception {

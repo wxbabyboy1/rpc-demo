@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import rpc.demo.util.codec.Codec;
 import rpc.demo.util.codec.JsonCodec;
+import rpc.demo.util.codec.XmlCodec;
 import rpc.demo.util.protocol.ProtocolResponseEntity;
 
 import java.nio.charset.StandardCharsets;
@@ -15,13 +16,14 @@ public class ClientDecoder extends ByteToMessageDecoder {
 
     //{[body.length]}body
 
-    private Codec codec = new JsonCodec();
+    private Codec codec = new XmlCodec();
+
+    private int bodyLen = 0;
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> list) throws Exception {
         //先解析包头
-        int bodyLen = 0;
-        if (buf.readableBytes() >= 8) {
+        if (bodyLen == 0 && buf.readableBytes() >= 8) {
             //{[  ]}  标记位处理，这里不做演示
             byte[] L = new byte[2];
             byte[] len = new byte[4];
@@ -39,6 +41,7 @@ public class ClientDecoder extends ByteToMessageDecoder {
         if (bodyLen > 0 && buf.readableBytes() >= bodyLen) {
             byte[] body = new byte[bodyLen];
             buf.readBytes(body);
+            bodyLen = 0;
             String result_body = new String(body, StandardCharsets.UTF_8);
             System.out.println("包体：" + result_body);
             ProtocolResponseEntity result = codec.decode(body, ProtocolResponseEntity.class);

@@ -5,13 +5,14 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import rpc.demo.util.codec.Codec;
 import rpc.demo.util.codec.JsonCodec;
+import rpc.demo.util.codec.XmlCodec;
 import rpc.demo.util.protocol.Const;
 
 import java.nio.charset.StandardCharsets;
 
 public class ServerEncoder extends MessageToByteEncoder<Object> {
 
-    private Codec codec = new JsonCodec();
+    private Codec codec = new XmlCodec();
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Object entity, ByteBuf buf) throws Exception {

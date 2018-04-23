@@ -16,16 +16,16 @@ public class UserInfo implements Serializable {
 
     private int sex;
 
-    private List<UserInfo> users;
+    private List<Ad> ads;
 
     @Override
     public String toString() {
         return String.format(
-                "{userId:%d,userName:'%s',sex:%d,users:[{%s}]}"
+                "{userId:%d,userName:'%s',sex:%d,users:[%s]}"
                 ,this.userId
                 ,this.userName
                 ,this.sex
-                ,this.users.get(0).getUserName()
+                ,this.ads.get(0).toString()
         );
     }
 
