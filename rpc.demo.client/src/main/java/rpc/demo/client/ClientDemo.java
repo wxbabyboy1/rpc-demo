@@ -9,12 +9,13 @@ import java.io.InterruptedIOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientDemo {
 
     public static void main(String[] args) throws Exception {
-        client();
+        testTypeToClass();
     }
 
     private static void client() throws IOException, InterruptedException {
@@ -50,7 +51,7 @@ public class ClientDemo {
     }
 
     private static void testTypeToClass() {
-        UserInfo userInfo = new UserInfo();
+        List<UserInfo> userInfo = new ArrayList<>();
         Class clazz = userInfo.getClass();
         // 获取该类直接父类的类型
         Type type = clazz.getGenericSuperclass();
@@ -58,7 +59,7 @@ public class ClientDemo {
         ParameterizedType pType = (ParameterizedType) type;
         Type[] types = pType.getActualTypeArguments();
         // Type类型所有已知实现类： Class，所以可以强制转换
-        Class cClass = (Class) types[0];
+        Class<UserInfo> cClass = (Class<UserInfo>) types[0];
         System.out.println(cClass);
         System.out.println(types[0].getClass());
     }
