@@ -10,4 +10,6 @@ public interface UserIntf {
 
     public UserInfo find(int userId);
 
+    public UserInfo[] findByIds(int[] userId);
+
 }

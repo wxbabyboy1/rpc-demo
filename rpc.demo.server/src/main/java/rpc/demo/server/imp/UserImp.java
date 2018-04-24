@@ -46,4 +46,11 @@ public class UserImp implements UserIntf {
         return userInfo;
     }
 
+    @Override
+    public UserInfo[] findByIds(int[] userId) {
+        List<UserInfo> list = findById(userId[0]);
+
+        return list.toArray(new UserInfo[]{});
+    }
+
 }
