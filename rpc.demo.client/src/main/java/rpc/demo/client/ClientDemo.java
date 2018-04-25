@@ -15,7 +15,7 @@ import java.util.List;
 public class ClientDemo {
 
     public static void main(String[] args) throws Exception {
-        testTypeToClass();
+        client();
     }
 
     private static void client() throws IOException, InterruptedException {
