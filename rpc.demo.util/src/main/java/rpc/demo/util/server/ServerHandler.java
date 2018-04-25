@@ -3,7 +3,7 @@ package rpc.demo.util.server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import rpc.demo.util.codec.Codec;
-import rpc.demo.util.codec.JsonCodec;
+import rpc.demo.util.codec.CodecFactory;
 import rpc.demo.util.protocol.ProtocolRequestEntity;
 import rpc.demo.util.protocol.ProtocolResponseEntity;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class ServerHandler extends SimpleChannelInboundHandler<ProtocolRequestEntity> {
 
-    private Codec codec = new JsonCodec();
+    private Codec codec = CodecFactory.codec();
 
     private Map<String, ServiceContainer> services;
 

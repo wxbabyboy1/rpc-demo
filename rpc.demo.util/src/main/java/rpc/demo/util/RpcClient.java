@@ -9,7 +9,7 @@ import rpc.demo.util.client.ClientDecoder;
 import rpc.demo.util.client.ClientEncoder;
 import rpc.demo.util.client.ClientHandler;
 import rpc.demo.util.codec.Codec;
-import rpc.demo.util.codec.JsonCodec;
+import rpc.demo.util.codec.CodecFactory;
 import rpc.demo.util.protocol.ProtocolRequestEntity;
 import rpc.demo.util.protocol.ProtocolResponseEntity;
 
@@ -79,7 +79,7 @@ public class RpcClient implements Closeable {
 
     static class RpcInvoker implements InvocationHandler {
 
-        private Codec codec = new JsonCodec();
+        private Codec codec = CodecFactory.codec();
 
         private ChannelFuture future;
 
@@ -113,9 +113,19 @@ public class RpcClient implements Closeable {
             ProtocolResponseEntity responsetEntity = channel.get(5000000);
 
             //反序列化结果，需要对返回类型做特殊处理，例如集合等等
+            byte[] result_bytes = responsetEntity.getResult();
             Class returnClazz = method.getReturnType();
-            result = codec.decode(responsetEntity.getResult(), returnClazz);
-
+            if (returnClazz.isArray()) {
+                System.out.println("返回值是个集合：" + returnClazz.getName());
+            }
+//            if (returnClazz.getComponentType() == null) {
+                result = codec.decode(result_bytes, returnClazz);
+//            } else {
+//                result = codec.decodeArray(result_bytes, returnClazz);
+//            }
+            if (result.getClass().isArray()) {
+                System.out.println("返回值是个集合：" + returnClazz.getName());
+            }
             return result;
         }
     }

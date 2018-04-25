@@ -22,8 +22,8 @@ public class JsonCodec implements Codec {
     }
 
     @Override
-    public Object decodeArray(String obj, Class clazz) {
-        return JSON.parseArray(obj, clazz);
+    public Object decodeArray(byte[] obj, Class clazz) {
+        return JSON.parseArray(new String(obj), clazz.getComponentType());
     }
 
 }

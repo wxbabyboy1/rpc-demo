@@ -6,12 +6,16 @@ import rpc.demo.util.RpcClient;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientDemo {
 
     public static void main(String[] args) throws Exception {
-        client();
+        testTypeToClass();
     }
 
     private static void client() throws IOException, InterruptedException {
@@ -24,7 +28,11 @@ public class ClientDemo {
                     int end = b * 5;
                     for (int j = start; j < end; j++) {
                         UserInfo userInfo = userIntf.find(j);
-                        System.out.println("查询的结果：" + userInfo);
+                        System.out.println("查询的结果1：" + userInfo);
+                        List<UserInfo> userInfos = userIntf.findById(j);
+                        System.out.println("查询的结果2：" + userInfos);
+                        UserInfo[] userInfoArray = userIntf.findByIds(new int[]{j});
+                        System.out.println("查询的结果3：" + userInfoArray);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -40,6 +48,20 @@ public class ClientDemo {
         byte[] b = "]}".getBytes(StandardCharsets.UTF_8);
 
         System.in.read();
+    }
+
+    private static void testTypeToClass() {
+        List<UserInfo> userInfo = new ArrayList<>();
+        Class clazz = userInfo.getClass();
+        // 获取该类直接父类的类型
+        Type type = clazz.getGenericSuperclass();
+        // 通过ParameterizedType获取 此类型实际类型参数的 Type对象的数组
+        ParameterizedType pType = (ParameterizedType) type;
+        Type[] types = pType.getActualTypeArguments();
+        // Type类型所有已知实现类： Class，所以可以强制转换
+        Class<UserInfo> cClass = (Class<UserInfo>) types[0];
+        System.out.println(cClass);
+        System.out.println(types[0].getClass());
     }
 
 }

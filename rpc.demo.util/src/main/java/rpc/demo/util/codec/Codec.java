@@ -9,6 +9,6 @@ public interface Codec {
 
     public Object decode(String obj, Class clazz);
 
-    public Object decodeArray(String obj, Class clazz);
+    public Object decodeArray(byte[] obj, Class clazz);
 
 }
