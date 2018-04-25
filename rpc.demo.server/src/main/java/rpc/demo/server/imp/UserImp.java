@@ -53,4 +53,16 @@ public class UserImp implements UserIntf {
         return list.toArray(new UserInfo[]{});
     }
 
+    @Override
+    public List<Ad> findByUserinfos(List<UserInfo> userInfos) {
+        System.out.println("userInfos ： " + userInfos);
+        List<Ad> ads = new ArrayList<>();
+        Ad ad = new Ad();
+        ad.setAddress("asdfs");
+        ad.setId(2);
+        ads.add(ad);
+
+        return ads;
+    }
+
 }

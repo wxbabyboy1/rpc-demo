@@ -1,6 +1,7 @@
 package rpc.demo.client;
 
 import rpc.demo.contract.intf.UserIntf;
+import rpc.demo.contract.model.Ad;
 import rpc.demo.contract.model.UserInfo;
 import rpc.demo.util.RpcClient;
 
@@ -24,8 +25,9 @@ public class ClientDemo {
             new Thread(() -> {
                 try (RpcClient client = RpcClient.get("localhost", 9000) ) {
                     UserIntf userIntf = client.getProxy(UserIntf.class);
-                    int start = (b - 1) * 5;
-                    int end = b * 5;
+                    int pageSize = 1;
+                    int start = (b - 1) * pageSize;
+                    int end = b * pageSize;
                     for (int j = start; j < end; j++) {
                         UserInfo userInfo = userIntf.find(j);
                         System.out.println("查询的结果1：" + userInfo);
@@ -33,6 +35,8 @@ public class ClientDemo {
                         System.out.println("查询的结果2：" + userInfos);
                         UserInfo[] userInfoArray = userIntf.findByIds(new int[]{j});
                         System.out.println("查询的结果3：" + userInfoArray);
+                        List<Ad> ads = userIntf.findByUserinfos(userInfos);
+                        System.out.println("查询的结果4：" + ads);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

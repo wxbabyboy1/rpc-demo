@@ -16,11 +16,12 @@ public class ServerDecoder extends ByteToMessageDecoder {
 
     private Codec codec = CodecFactory.codec();
 
+    private int bodyLen = 0;
+
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> list) throws Exception {
         //先解析包头
-        int bodyLen = 0;
-        if (buf.readableBytes() >= 8) {
+        if (bodyLen == 0 && buf.readableBytes() >= 8) {
             //{[  ]}  标记位处理，这里不做演示
             byte[] L = new byte[2];
             byte[] len = new byte[4];
@@ -38,6 +39,7 @@ public class ServerDecoder extends ByteToMessageDecoder {
         if (bodyLen > 0 && buf.readableBytes() >= bodyLen) {
             byte[] body = new byte[bodyLen];
             buf.readBytes(body);
+            bodyLen = 0;
             String result = new String(body, StandardCharsets.UTF_8);
             System.out.println("包体：" + result);
             //反序列化对于内部的params属性做特殊处理
